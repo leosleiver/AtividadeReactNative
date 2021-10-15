@@ -38,7 +38,7 @@ export const CadastroContato = () => {
           <Input type="email" placeholder="" />
           <FormControl.Label>Telefone</FormControl.Label>
           <Input type="text" placeholder="" />
-          <Button size="sm" variant="subtle" marginTop ="5px" onPress={() => navigation.navigate('ListarContato')}>Salvar</Button>
+          <Button size="sm" variant="solid" marginTop ="5px" onPress={() => navigation.navigate('ListarContato')}>Salvar</Button>
         </Stack>
       </FormControl>
     </Box>
