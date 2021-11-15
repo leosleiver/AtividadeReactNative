@@ -13,8 +13,29 @@ import {
 } from "native-base"
 import { useNavigation } from '@react-navigation/native';
 import { Header } from 'react-native-elements'
+import axios from "axios";
 
 export const CadastroContato = () => {
+
+
+
+  function inserirDados(){
+
+    axios.post('http://professornilson.com/testeservico/clientes'
+    , {
+    
+    nome: getNome,
+    telefone: getTelefone,
+    cpf: getCpf
+    }).then(function (response) {
+    console.log(response);
+    }).catch(function (error) {
+    console.log(error);
+    
+    });
+    
+    }
+
     const navigation = useNavigation(); 
     return (
 

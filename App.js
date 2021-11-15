@@ -7,12 +7,16 @@ import CadastroContato from './view/CadastroContato';
 import AlterarCadastro from './view/AlterarCadastro';
 import CadastroUser from './view/CadastroUser';
 
+
 const Stack = createNativeStackNavigator();
 
+
+
 export default function App() {
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="ListarContato">
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="ListarContato" component={ListarContato}/>
         <Stack.Screen name="CadastroContato" component={CadastroContato}/>

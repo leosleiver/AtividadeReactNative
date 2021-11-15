@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import {
   FormControl,
   Input,
@@ -11,11 +11,44 @@ import {
   Image,
   Button,
 } from "native-base"
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export const Login = () => {
+
+  const [email,setEmail] = useState(""); 
+  const [senha,setSenha] = useState("");
+  
+  // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
+var firebaseConfig = {
+  apiKey: "API_KEY",
+  authDomain: "PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://PROJECT_ID.firebaseio.com",
+  projectId: "PROJECT_ID",
+  storageBucket: "PROJECT_ID.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID",
+  measurementId: "G-MEASUREMENT_ID",
+};
+const app = initializeApp(firebaseConfig);
+
+function loginFireBase (){
+  const auth = getAuth();
+signInWithEmailAndPassword(auth, email, senha)
+  .then((userCredential) => {
+    navigation.navigate('ListarContato');
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    console.log('Não conectado')
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+
+};
+
     const navigation = useNavigation(); 
     return (
     <Box
@@ -36,13 +69,13 @@ export const Login = () => {
           />
           </Center>
           <FormControl.Label>Login</FormControl.Label>
-          <Input type="text" placeholder="insira seu login" />
+          <Input type="text" placeholder="insira seu email" value={email}  onChangeText={email => setEmail(email)}/>
           <FormControl.Label>Senha</FormControl.Label>
-          <Input type="password" placeholder="insira sua senha" />
+          <Input type="password" placeholder="insira sua senha" values={senha} onChangeText={senha => setSenha(senha)}/>
           <FormControl.HelperText>
             Sua senha deve conter 6 caracteres.
           </FormControl.HelperText>
-          <Button size="sm" variant="subtle" marginTop ="5px" onPress={() => navigation.navigate('ListarContato')}>LOGIN</Button>
+          <Button size="sm" variant="subtle" marginTop ="5px" onPress={()=>{ loginFireBase()}}>LOGIN</Button>
           <Button colorScheme="danger" marginTop ="5px" onPress={() => navigation.navigate('CadastroUser')}>CADASTRE-SE</Button>
           <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
             Senha incorreta.

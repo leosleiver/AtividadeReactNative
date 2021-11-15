@@ -1,108 +1,85 @@
-import React from "react"
-import {  Box,  FlatList,  Heading,  Avatar,  HStack,  VStack,  Text,  Spacer,  Center,  NativeBaseProvider,Button} from "native-base"
+import React, {useState, useEffect}from "react"
+import {  Box,  FlatList,  Heading,  Avatar, View, HStack,  VStack,  Text,  Spacer,  Center,  NativeBaseProvider,Button} from "native-base"
 import { Header } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native';
+import axios from "axios";
+import { ListItem } from "react-native-elements/dist/list/ListItem";
 
 export const ListarContato = () => {
 
   const navigation = useNavigation(); 
-  const data = [
-    {
-      id: "01",
-      fullName: "Contato 01",
-      recentText: "XX XXXXXXXXX",
-      avatarUrl:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    },
-    {
-      id: "02",
-      fullName: "Contato 02",
-      recentText: "XX XXXXXXXXX",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEaZqT3fHeNrPGcnjLLX1v_W4mvBlgpwxnA&usqp=CAU",
-    },
-    {
-      id: "03",
-      fullName: "Contato 03",
-      recentText: "XX XXXXXXXXX",
-      avatarUrl: "https://miro.medium.com/max/1400/0*0fClPmIScV5pTLoE.jpg",
-    },
-  ]
-  return (
-    <Box
-      w={{
-        base: "100%",
-        md: "25%",
-      }}
-    >
-  
-<Header
-  leftComponent={{ icon: 'menu', color: '#fff', iconStyle: { color: '#fff' } }}
-  centerComponent={{ text: 'Contatos', style: { color: '#fff' } }}
-  rightComponent={{ icon: 'home', color: '#fff' }}
-/>
-<Button size="1/6" variant="solid"  marginLeft = "270px" marginTop ="5px" onPress={() => navigation.navigate('CadastroContato')}>Add</Button>
+  const [dados,setDados] = useState([]);
 
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <Box
-            borderBottomWidth="1"
-            _dark={{
-              borderColor: "gray.600",
-            }}
-            borderColor="coolGray.200"
-            pl="4"
-            pr="5"
-            py="2"
-          >
-            <HStack space={3} justifyContent="space-between">
-              <Avatar
-                size="48px"
-                source={{
-                  uri: item.avatarUrl,
-                }}
-              />
-              <VStack>
-                <Text
-                  _dark={{
-                    color: "warmGray.50",
-                  }}
-                  color="coolGray.800"
-                  bold
-                >
-                  {item.fullName}
-                </Text>
-                <Text
-                  color="coolGray.600"
-                  _dark={{
-                    color: "warmGray.200",
-                  }}
-                >
-                  {item.recentText}
-                </Text>
-              </VStack>
-              <Spacer />
-              <Text
-                fontSize="xs"
-                _dark={{
-                  color: "warmGray.50",
-                }}
-                color="coolGray.800"
-                alignSelf="flex-start"
-              >
-                {item.timeStamp}
-              </Text>
-            </HStack>
-          </Box>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-      
-   
-    </Box>
+  function excluirDados(){
+
+    axios.delete('http://professornilson.com/testeservico/clientes/'+getId)
     
-  )
+    .then(function (response) {
+    console.log(response);
+    }).catch(function (error) {
+    console.log(error);
+    
+    });
+    
+    }
+
+  function consultarDados(){
+    
+
+    axios.get('http://professornilson.com/testeservico/clientes')
+    
+    .then(function (response) {
+    console.log(response);
+    }).catch(function (error) {
+    console.log(error);
+    
+    });
+    
+    }
+
+  useEffect(() => {
+
+    function resgatarDados(){
+      // Make a request for a user with a given ID
+axios.get('http://professornilson.com/testeservico/clientes')
+.then(function (response) {
+    setDados(response.data);
+    console.log(response);
+})
+.catch(function (error) {
+  console.log(error);
+});
+    }
+      
+
+  
+  
+  },[])
+
+  
+  return (
+    <View>
+ {
+
+   
+    dados.map((l,i) => (
+    <ListItem key={i}  bottomDivider>
+      <Avatar source={{uri : 'https://p.kindpng.com/picc/s/78-786678_avatar-hd-png-download.png'}}/>
+      <ListItem.Content>
+        <ListItem.Title>{l.nome}</ListItem.Title>
+        <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
+      </ListItem.Content>
+      
+       </ListItem>
+ 
+ 
+   )) 
+    }
+   </View>  
+ 
+       
+     )
+
 }
 
 export default () => {
